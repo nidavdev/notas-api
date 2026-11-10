@@ -1,4 +1,5 @@
 # API de Notas
+[![CI](https://github.com/nidavdev/notas-api/actions/workflows/ci.yml/badge.svg)](https://github.com/nidavdev/notas-api/actions/workflows/ci.yml)
 Aplicación web para guardar notas de texto. Usa dos contenedores de Docker: la API (Flask, Python), que muestra la página y atiende las peticiones, y la base de datos (PostgreSQL), donde se guardan las notas.
 
 ## Requisitos
@@ -75,4 +76,3 @@ docker-compose.yml
 ```
 
 Rutas de la API: `GET /` (página), `POST /notes` (guardar; `title` es obligatorio), `GET /notes` (listar), `DELETE /notes/<id>` (eliminar) y `GET /health` (estado de la API y la base de datos).
-Última ejecución de workflow: [![CI](https://github.com/nidavdev/notas-api/actions/workflows/ci.yml/badge.svg)](https://github.com/nidavdev/notas-api/actions/workflows/ci.yml)
