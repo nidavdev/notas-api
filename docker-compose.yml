@@ -1,0 +1,51 @@
+services:
+  # Contenedor 2: base de datos PostgreSQL
+  db:
+    image: postgres:16.4-alpine
+    container_name: notes-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?Falta POSTGRES_USER en el archivo .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Falta POSTGRES_PASSWORD en el archivo .env}
+      POSTGRES_DB: ${POSTGRES_DB:?Falta POSTGRES_DB en el archivo .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - notes-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Contenedor 1: API en Flask
+  api:
+    build: .
+    container_name: notes-api
+    restart: unless-stopped
+    environment:
+      DB_HOST: db # nombre del servicio, Docker lo resuelve dentro de la red
+      DB_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER:?Falta POSTGRES_USER en el archivo .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Falta POSTGRES_PASSWORD en el archivo .env}
+      POSTGRES_DB: ${POSTGRES_DB:?Falta POSTGRES_DB en el archivo .env}
+    ports:
+      - "${API_PORT:-5000}:5000"
+    networks:
+      - notes-net
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+networks:
+  notes-net:
+    driver: bridge
+
+volumes:
+  pgdata:

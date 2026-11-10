@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Crear .env a partir de .env.example
+        run: cp .env.example .env
+
+      - name: Construir las imágenes
+        run: docker compose build
+
+      - name: Levantar los servicios
+        run: docker compose up -d --wait --wait-timeout 120
+
+      - name: Probar comunicación API -> base de datos (guardar y leer)
+        run: |
+          curl -fsS -X POST http://localhost:5000/notes \
+            -H "Content-Type: application/json" \
+            -d '{"title":"nota de CI","content":"guardada desde GitHub Actions"}'
+          echo
+          curl -fsS http://localhost:5000/notes | tee response.json
+          echo
+          grep -q "nota de CI" response.json
+
+      - name: Mostrar logs si algo falló
+        if: failure()
+        run: docker compose logs
+
+      - name: Apagar y limpiar
+        if: always()
+        run: docker compose down -v

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mis notas</title>
+  <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+  <main>
+    <h1>Mis notas</h1>
+    <p id="status" role="status">Comprobando la conexión…</p>
+
+    <form id="note-form" novalidate>
+      <label for="title">Título</label>
+      <input id="title" maxlength="100" autocomplete="off" required>
+
+      <label for="content">Contenido</label>
+      <textarea id="content" rows="4"></textarea>
+
+      <button id="save" type="submit">Guardar nota</button>
+      <p id="message" role="status"></p>
+    </form>
+
+    <h2>Notas guardadas</h2>
+    <ul id="notes"></ul>
+    <p id="empty" hidden>Todavía no hay notas.</p>
+  </main>
+
+  <script src="static/script.js" defer></script>
+</body>
+</html>
