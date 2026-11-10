@@ -75,3 +75,4 @@ docker-compose.yml
 ```
 
 Rutas de la API: `GET /` (página), `POST /notes` (guardar; `title` es obligatorio), `GET /notes` (listar), `DELETE /notes/<id>` (eliminar) y `GET /health` (estado de la API y la base de datos).
+Última ejecución de workflow: [![CI](https://github.com/nidavdev/notas-api/actions/workflows/ci.yml/badge.svg)](https://github.com/nidavdev/notas-api/actions/workflows/ci.yml)
