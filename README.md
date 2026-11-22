@@ -1,5 +1,4 @@
 # API de Notas
-[![CI](https://github.com/nidavdev/notas-api/actions/workflows/ci.yml/badge.svg)](https://github.com/nidavdev/notas-api/actions/workflows/ci.yml)
 Aplicación web para guardar notas de texto. Usa dos contenedores de Docker: la API (Flask, Python), que muestra la página y atiende las peticiones, y la base de datos (PostgreSQL), donde se guardan las notas.
 
 ## Requisitos
@@ -54,7 +53,7 @@ Si se cambian las credenciales después de haber levantado la aplicación una ve
 ## Problemas frecuentes
 - Si aparece `Falta POSTGRES_PASSWORD en el archivo .env`, falta crear el `.env` con `cp .env.example .env`.
 - Si aparece `Cannot connect to the Docker daemon`, Docker Desktop no está abierto.
-- Si aparece `port is already allocated`, el puerto 5000 está ocupado. Cambia `API_PORT=5001` en `.env` y abre http://localhost:5001.
+- Si aparece `port is already allocated`, el puerto 5000 está ocupado. Cambiar `API_PORT=5001` en `.env` y abrir http://localhost:5001.
 - Si la página no carga justo después de `up`, espera unos segundos: la API espera a que la base de datos esté lista.
 - Si el indicador sale en rojo, revisa `docker compose logs db`. Si cambiaste credenciales, aplica `docker compose down -v`.
 
@@ -68,7 +67,10 @@ app/
   index.html -> página web
   requirements.txt -> dependencias
   static/ -> style.css y script.js
-.github/workflows/ci.yml
+Jenkinsfile -> pipeline de Jenkins (Checkout, Build, Test y post)
+tests/
+  smoke_test.py -> pruebas de la API, se ejecutan dentro del contenedor api
+jenkins/ -> Jenkins en Docker (Dockerfile, plugins.txt, casc.yaml, docker-compose.yml)
 Dockerfile
 docker-compose.yml
 .env.example -> plantilla de variables
@@ -76,3 +78,8 @@ docker-compose.yml
 ```
 
 Rutas de la API: `GET /` (página), `POST /notes` (guardar; `title` es obligatorio), `GET /notes` (listar), `DELETE /notes/<id>` (eliminar) y `GET /health` (estado de la API y la base de datos).
+
+## Integración continua con Jenkins
+El proyecto incluye un `Jenkinsfile` con las etapas **Checkout**, **Build** (construye la imagen de `api` y descarga la de `db`) y **Test** (levanta los contenedores y ejecuta `tests/smoke_test.py`), más un bloque `post` que muestra los logs si algo falla y limpia los contenedores y volúmenes. El pipeline se dispara solo con cada push (Poll SCM, Jenkins revisa el repositorio cada ~2 minutos).
+
+Para levantar Jenkins y crear el job, seguir las instrucciones de [`jenkins/README.md`](jenkins/README.md).

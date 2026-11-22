@@ -1,0 +1,12 @@
+# Plugins instalados automáticamente al construir la imagen de Jenkins
+git
+github
+workflow-aggregator
+credentials
+credentials-binding
+plain-credentials
+configuration-as-code
+timestamper
+ws-cleanup
+pipeline-stage-view
+docker-workflow

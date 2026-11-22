@@ -13,3 +13,7 @@ venv
 docker-compose.yml
 Dockerfile
 .dockerignore
+
+jenkins
+tests
+Jenkinsfile

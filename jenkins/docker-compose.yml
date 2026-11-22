@@ -1,0 +1,17 @@
+services:
+  jenkins:
+    build: .
+    container_name: jenkins
+    restart: unless-stopped
+    user: root
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"   # interfaz web
+      - "50000:50000" # agentes (opcional)
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock # Jenkins usa el Docker del host
+
+volumes:
+  jenkins_home:

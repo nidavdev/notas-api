@@ -2,7 +2,6 @@ services:
   # Contenedor 2: base de datos PostgreSQL
   db:
     image: postgres:16.4-alpine
-    container_name: notes-db
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:?Falta POSTGRES_USER en el archivo .env}
@@ -21,7 +20,6 @@ services:
   # Contenedor 1: API en Flask
   api:
     build: .
-    container_name: notes-api
     restart: unless-stopped
     environment:
       DB_HOST: db # nombre del servicio, Docker lo resuelve dentro de la red

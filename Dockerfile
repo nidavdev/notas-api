@@ -1,4 +1,4 @@
-# Imagen base oficial con versión fija
+# Imagen base oficial con version fija
 FROM python:3.12.7-slim-bookworm
 
 ENV PYTHONDONTWRITEBYTECODE=1 \

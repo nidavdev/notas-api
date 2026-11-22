@@ -1,0 +1,25 @@
+# Jenkins Configuration as Code.
+# Los valores salen de variables de entorno (jenkins/.env, que NO se sube a Git),
+# así ningún secreto queda escrito en el código.
+jenkins:
+  systemMessage: "Jenkins de notas-api (configurado con JCasC)"
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "${JENKINS_ADMIN_ID}"
+          password: "${JENKINS_ADMIN_PASSWORD}"
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - usernamePassword:
+              scope: GLOBAL
+              id: "postgres-credentials"
+              username: "${POSTGRES_USER}"
+              password: "${POSTGRES_PASSWORD}"
+              description: "Credenciales de PostgreSQL para el pipeline de notas-api"
