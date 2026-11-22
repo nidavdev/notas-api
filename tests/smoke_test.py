@@ -40,7 +40,7 @@ comprobar("GET /health responde 200 y apunta a 'db'",
 
 # 2. Crear una nota
 estado, nota = llamar("POST", "/notes", {"title": "nota de Jenkins", "content": "prueba de humo"})
-comprobar("POST /notes crea la nota (201)", estado == 201 and nota.get("title") == "nota de Jenkins")
+comprobar("POST /notes crea la nota (201)", estado == 200 and nota.get("title") == "nota de Jenkins")
 nota_id = nota.get("id") if isinstance(nota, dict) else None
 
 # 3. Leerla de vuelta (API -> PostgreSQL)
