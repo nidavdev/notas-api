@@ -81,5 +81,3 @@ Rutas de la API: `GET /` (página), `POST /notes` (guardar; `title` es obligator
 
 ## Integración continua con Jenkins
 El proyecto incluye un `Jenkinsfile` con las etapas **Checkout**, **Build** (construye la imagen de `api` y descarga la de `db`) y **Test** (levanta los contenedores y ejecuta `tests/smoke_test.py`), más un bloque `post` que muestra los logs si algo falla y limpia los contenedores y volúmenes. El pipeline se dispara solo con cada push (Poll SCM, Jenkins revisa el repositorio cada ~2 minutos).
-
-Para levantar Jenkins y crear el job, seguir las instrucciones de [`jenkins/README.md`](jenkins/README.md).
